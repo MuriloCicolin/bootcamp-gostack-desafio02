@@ -35,7 +35,7 @@
 
 A aplicação que iremos dar início ao desenvolvimento a partir de agora é um app para uma transportadora fictícia, o FastFeet.
 
-### **Um pouco sobre as ferramentas utitlizadas**
+### **Um pouco sobre as ferramentas utilizadas**
 
 - Sucrase + Nodemon;
 - ESLint + Prettier + EditorConfig;
