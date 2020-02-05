@@ -31,8 +31,8 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      cep: {
-        type: Sequelize.INTEGER,
+      zip_code: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
       created_at: {

@@ -7,18 +7,26 @@ class RecipientController {
       name: Yup.string().required(),
       street: Yup.string().required(),
       number: Yup.number().required(),
-      state: Yup.string().required(),
+      complement: Yup.string(),
+      state: Yup.string()
+        .min(2)
+        .required(),
       city: Yup.string().required(),
-      cep: Yup.number().required(),
+      zipCode: Yup.string().required(),
     });
 
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const { name, street, number, state, city, cep } = await Recipients.create(
-      req.body
-    );
+    const {
+      name,
+      street,
+      number,
+      state,
+      city,
+      zipCode,
+    } = await Recipients.create(req.body);
 
     const recipients = {
       name,
@@ -26,34 +34,53 @@ class RecipientController {
       number,
       state,
       city,
-      cep,
+      zipCode,
     };
 
     return res.json(recipients);
   }
 
   async update(req, res) {
-    const recipients = await Recipients.findByPk(req.userId);
+    const schema = Yup.object().shape({
+      name: Yup.string().required(),
+      zipCode: Yup.string().required(),
+      street: Yup.string()
+        .required()
+        .when('zipCode', (zipCode, field) =>
+          zipCode ? field.required() : field
+        ),
+      number: Yup.number().required(),
+      state: Yup.string()
+        .max(2)
+        .required(),
+      city: Yup.string().required(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails' });
+    }
+
+    const { id } = req.params;
+
+    const recipients = await Recipients.findByPk(id);
 
     const {
-      id,
       name,
       street,
       number,
       state,
       city,
-      cep,
+      zipCode,
     } = await recipients.update(req.body);
 
     return res.json({
       recipients: {
-        id,
         name,
         street,
         number,
         state,
         city,
-        cep,
+        zipCode,
       },
     });
   }
