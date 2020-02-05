@@ -64,6 +64,10 @@ class RecipientController {
 
     const recipients = await Recipients.findByPk(id);
 
+    if (!recipients) {
+      return res.status(400).json({ error: 'User not found' });
+    }
+
     const {
       name,
       street,
@@ -83,6 +87,14 @@ class RecipientController {
         zipCode,
       },
     });
+  }
+
+  async index(req, res) {
+    const recipients = await Recipients.findAll();
+    if (!recipients) {
+      return res.status(401).json({ error: 'Recipients does not exists' });
+    }
+    return res.json(recipients);
   }
 }
 
